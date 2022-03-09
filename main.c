@@ -131,17 +131,38 @@ void addMainItem(LIST *menu){
         *menu = newMain;
         itemCount++;
     }
-    printf("Would you like to add combo items? (y/n)");
-    scanf(" %c", &choice);
-    if(choice == 'y')
-        addComboItem(&menu);
+    do{
+        printf("Would you like to add combo items? (y/n)");
+        scanf(" %c", &choice);
+        if(choice == 'y')
+            addComboItem(&menu);
+    }while(choice == 'y');
 }
 
 void addComboItem(LIST *menu){
 
-    
-    COMBOFOOD *current_item = malloc(sizeof(COMBOFOOD));
-
+    char itemChoice[15];
+    MAINFOOD *current_item = menu;
+    int flag = 0;
+    showMenu(menu);
+    printf("To which item would you like to add a combo item to?");
+    scanf(" %[^\n]s", itemChoice);
+    while(flag == 0 && current_item != NULL)
+    {
+        if(strcmp(*current_item->name, itemChoice) == 0)
+            flag = 1;
+        else
+            current_item = current_item->next;
+    }
+    if(flag == 1)
+    {
+        char foodName[15];
+        float price;
+        int numItems, i;
+        printf("How many combo items would you like to add to %s", current_item)
+    }
+    else
+        printf("There is no item with that name. Returning to main menu!");
 }
 
 void takeOrder(float *totalBal, LIST menu){
