@@ -14,7 +14,7 @@ typedef struct comboFoodItem{
     char name[15];
     float price;
     struct comboFoodItem *next;
-} COMBOFOOD;
+} COMBOFOOD, *SLIST;
 
 typedef struct mainFoodItem{
     char name[15];
@@ -27,18 +27,19 @@ int itemCount = 0;
 
 void showMenu(LIST menu);
 void addMainItem(LIST *menu);
+void addComboItem(LIST *menu);
 void takeOrder(float *totalBalance, LIST menu);
 float getPrice(int choice, LIST menu);
-void getRemBal(float *totalBalance, float cashPaid);
+void getRemBal(float *totalBalance);
 
 int main(){
 
     LIST menu = NULL;
     MAINFOOD newMain;
     int choice, maxLogin = 0;
-    float totalBal = 0;
     while(choice != 3)
     {
+        float totalBal = 0;
         printf("Welcome to McDonald's!\n");
         printf("Are you a customer or a manager?\n");
         printf("1. Order\n");
@@ -61,8 +62,16 @@ int main(){
         if(choice == 1)
         {
             showMenu(menu);
-            takeOrder(&totalBal, menu);
-            printf("Your total balance is: %.2f\n", totalBal);
+            if(menu != NULL)
+            {
+                takeOrder(&totalBal, menu);
+                printf("Your total balance is: %.2f\n", totalBal);
+                getRemBal(&totalBal);
+                if(totalBal < 0)
+                    printf("Thank you for your order! Your change is %.2f. See you soon!\n", totalBal*-1);
+                else
+                    printf("Thank you for your order! See you soon! \n");
+            }
         }
         else if(choice == 2)
             addMainItem(&menu);
@@ -70,9 +79,19 @@ int main(){
     return 0;
 }
 
-void getRemBal(float *totalBalance, float cashPaid){
+void getRemBal(float *totalBalance){
 
-    
+    float cashPaid, tries = 0;
+    while(tries <= 3 && *totalBalance > 0)
+    {
+        if(tries < 1)
+            printf("Enter cash paid: ");
+        else
+            printf("Your remaining balance is PHP %.2f.\n Enter cash paid: ", *totalBalance);
+        scanf("%f", &cashPaid);
+        *totalBalance-=cashPaid;
+        tries++;
+    }
 }
 
 void showMenu(LIST menu){
@@ -93,7 +112,7 @@ void showMenu(LIST menu){
 
 void addMainItem(LIST *menu){
 
-    char foodName[15];
+    char foodName[15], choice;
     float price;
     int numItems, i;
     printf("Good day, manager!\n");
@@ -112,6 +131,17 @@ void addMainItem(LIST *menu){
         *menu = newMain;
         itemCount++;
     }
+    printf("Would you like to add combo items? (y/n)");
+    scanf(" %c", &choice);
+    if(choice == 'y')
+        addComboItem(&menu);
+}
+
+void addComboItem(LIST *menu){
+
+    
+    COMBOFOOD *current_item = malloc(sizeof(COMBOFOOD));
+
 }
 
 void takeOrder(float *totalBal, LIST menu){
