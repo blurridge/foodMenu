@@ -2,7 +2,7 @@
 
 ## Context
 This personal project is a practice regarding the concepts of linked lists. This is in line with the current course that I'm taking
-which is Data Structures and Algorithms
+which is Data Structures and Algorithms.
 
 ## Goals
 1. Create a linked list of possible combo food to be added to a meal along with a main food product.
