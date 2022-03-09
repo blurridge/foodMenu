@@ -159,7 +159,9 @@ void addComboItem(LIST *menu){
         char foodName[15];
         float price;
         int numItems, i;
-        printf("How many combo items would you like to add to %s", current_item)
+        printf("How many combo items would you like to add to %s?", current_item->name);
+        scanf("%d", &numItems);
+        
     }
     else
         printf("There is no item with that name. Returning to main menu!");
